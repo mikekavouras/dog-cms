@@ -23,13 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) { }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        if let navController = window?.rootViewController as? UINavigationController,
-            let rootViewController = navController.viewControllers.first as? ViewController
-        {
-            rootViewController.fetchStickers()
-        }
-    }
+    func applicationDidBecomeActive(_ application: UIApplication) { }
 
     func applicationWillTerminate(_ application: UIApplication) { }
 }

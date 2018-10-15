@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import CloudKit
 
 enum ScreenState {
     case edit
@@ -63,6 +64,7 @@ class ViewController: UICollectionViewController,
             UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(toggleState)),
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAssetButtonTapped))
         ]
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Publish", style: .plain, target: self, action: #selector(publish))
     }
     
     // MARK: - Actions
@@ -96,32 +98,42 @@ class ViewController: UICollectionViewController,
     }
     
     @objc private func deleteButtonTapped() {
-        SVProgressHUD.show(withStatus: "Deleting stickers...")
-        
-        let stickersToDelete = stickers.filter { $0.isSelected }
-        API.default.deleteStickers(stickersToDelete) { response in
+        let itemIndices = self.stickers.enumerated().map { $1.isSelected ? $0 : -1 }.filter { $0 > -1 }
+        let indexPaths: [IndexPath] = itemIndices.map { IndexPath(row: $0, section: 0) }
+        self.stickers.remove(at: itemIndices)
+        self.collectionView.performBatchUpdates({
+            self.collectionView.deleteItems(at: indexPaths)
+        }) { _ in
+            self.state = .add
+            self.refreshTrashCanState()
+            self.refreshNavigationBarState()
+        }
+    }
+    
+    @objc private func publish() {
+        sync()
+    }
+    
+    // MARK: - Data
+    // MARK: - 
+    
+    private func sync() {
+        SVProgressHUD.show(withStatus: "Syncing doggos...")
+        API.default.sync(stickers) { response in
             switch response {
             case .success:
-                SVProgressHUD.dismiss()
-                let itemIndices = self.stickers.enumerated().map { $1.isSelected ? $0 : -1 }.filter { $0 > -1 }
-                let indexPaths: [IndexPath] = itemIndices.map { IndexPath(row: $0, section: 0) }
-                self.stickers.remove(at: itemIndices)
-                self.collectionView.performBatchUpdates({
-                    self.collectionView.deleteItems(at: indexPaths)
-                }) { _ in
-                    self.state = .add
-                    self.refreshTrashCanState()
-                    self.refreshNavigationBarState()
-                }
+                SVProgressHUD.showSuccess(withStatus: "Finished!")
+                SVProgressHUD.dismiss(withDelay: 2.0)
+                self.stickers.flushChanges()
             case .error:
-                SVProgressHUD.showError(withStatus: "Couldn't delete stickers")
+                SVProgressHUD.showError(withStatus: "Error syncing")
                 SVProgressHUD.dismiss(withDelay: 2.0)
             }
         }
     }
     
-    func fetchStickers() {
-        SVProgressHUD.show(withStatus: "Loading stickers...")
+    private func fetchStickers() {
+        SVProgressHUD.show(withStatus: "Fetching doggos...")
         API.default.fetchStickers { response in
             switch response {
             case .success(let records):
@@ -155,7 +167,7 @@ class ViewController: UICollectionViewController,
             navigationItem.setRightBarButtonItems([
                 UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(toggleState)),
                 UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonTapped))
-                ], animated: true)
+            ], animated: true)
             navigationItem.rightBarButtonItems?.last?.isEnabled = false
         case .add:
             collectionView.allowsSelection = false
@@ -209,19 +221,7 @@ extension ViewController {
     
     override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let sticker = stickers[sourceIndexPath.row]
-        stickers.remove(at: sourceIndexPath.row)
-        stickers.insert(sticker, at: destinationIndexPath.row)
-        
-        SVProgressHUD.show(withStatus: "Reordering stickers...")
-        API.default.updateSortOrders(stickers) { response in
-            switch response {
-            case .success:
-                SVProgressHUD.dismiss()
-            case .error:
-                SVProgressHUD.showError(withStatus: "Couldn't reorder stickers")
-                SVProgressHUD.dismiss(withDelay: 2.0)
-            }
-        }
+        stickers.move(sticker, from: sourceIndexPath.row, to: destinationIndexPath.row)
     }
 }
 
@@ -255,19 +255,12 @@ extension ViewController {
         defer { dismiss(animated: true, completion: nil) }
 
         if let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-            SVProgressHUD.show(withStatus: "Saving sticker...")
-            
-            API.default.createSticker(path: imageURL, initialSortPosition: stickers.count) { response in
-                switch response {
-                case .success(let sticker):
-                    SVProgressHUD.dismiss()
-                    self.stickers.append(sticker!)
-                    self.collectionView.reloadData()
-                case .error:
-                    SVProgressHUD.showError(withStatus: "Couldn't save sticker")
-                    SVProgressHUD.dismiss(withDelay: 2.0)
-                }
-            }
+            let asset = CKAsset(fileURL: imageURL)
+            let record = CKRecord(recordType: "Sticker")
+            record["image"] = asset
+            record["sortOrder"] = stickers.count
+            self.stickers.append(Sticker.from(record)!)
+            self.collectionView.reloadData()
         } else {
             SVProgressHUD.showError(withStatus: "Couldn't find the selected image")
             SVProgressHUD.dismiss(withDelay: 2.0)

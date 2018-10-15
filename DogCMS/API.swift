@@ -37,44 +37,9 @@ class API {
                 }
             }
         }
-    }
+    }    
     
-    func createSticker(path: URL, initialSortPosition: Int, _ onCompletion: @escaping (Response<Sticker>) -> Void) {
-        let asset = CKAsset(fileURL: path)
-        let record = CKRecord(recordType: "Sticker")
-        record["image"] = asset
-        record["sortOrder"] = initialSortPosition
-        
-        database.save(record) { record, error in
-            DispatchQueue.main.async {
-                if let _ = error {
-                    onCompletion(.error(error))
-                } else {
-                    let sticker = Sticker.from(record!)!
-                    onCompletion(.success(sticker))
-                }
-            }
-        }
-    }
-    
-    
-    func deleteStickers(_ stickers: [Sticker], _ onCompletion: @escaping (Response<Void>) -> Void) {
-        let recordIDs = stickers.map { $0.record.recordID }
-        let operation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: recordIDs)
-        operation.modifyRecordsCompletionBlock = { records, ids, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    onCompletion(.error(error))
-                } else {
-                    onCompletion(.success(nil))
-                }
-            }
-        }
-        database.add(operation)
-    }
-    
-    
-    func updateSortOrders(_ stickers: StickerCollection, _ onCompletion: @escaping (Response<Void>) -> Void) {
+    func updateSortOrders(_ stickers: StickerCollection, _ onCompletion: @escaping (Response<[Sticker]>) -> Void) {
         stickers.enumerated().forEach { (offset, element) in
             element.record.setValue(offset, forKey: "sortOrder")
         }
@@ -88,6 +53,29 @@ class API {
                     onCompletion(.error(error))
                 } else {
                     onCompletion(.success(nil))
+                }
+            }
+        }
+        database.add(operation)
+    }
+    
+    func sync(_ stickers: StickerCollection, _ onCompletion: @escaping (Response<Void>) -> Void) {
+        let toAdd = stickers[.added].map { $0.record }
+        let idsToDelete = stickers[.deleted].map { $0.record.recordID }
+        let operation = CKModifyRecordsOperation(recordsToSave: toAdd, recordIDsToDelete: idsToDelete)
+        operation.modifyRecordsCompletionBlock = { records, ids, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    onCompletion(.error(error))
+                } else {
+                    self.updateSortOrders(stickers) { response in
+                        switch response {
+                        case .success:
+                            onCompletion(.success(nil))
+                        case .error:
+                            onCompletion(.error(error))
+                        }
+                    }
                 }
             }
         }
