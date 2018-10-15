@@ -16,6 +16,7 @@
 		8D144A33216FEEB700AD925E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D144A32216FEEB700AD925E /* Main.storyboard */; };
 		8D144A36216FEED300AD925E /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D144A35216FEED300AD925E /* CloudKit.framework */; };
 		8D2F0F0F2172527400FBAF99 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2F0F0E2172527400FBAF99 /* API.swift */; };
+		8DD726502174E4920005D6F0 /* StickerCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7264F2174E4920005D6F0 /* StickerCollection.swift */; };
 		94EB47B387A1E4875DBE87A6 /* Pods_DogCMS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C5BE5A73AB9A6839ACF2A7 /* Pods_DogCMS.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		8D144A34216FEED100AD925E /* DogCMS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DogCMS.entitlements; sourceTree = "<group>"; };
 		8D144A35216FEED300AD925E /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		8D2F0F0E2172527400FBAF99 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		8DD7264F2174E4920005D6F0 /* StickerCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCollection.swift; sourceTree = "<group>"; };
 		924D4345BB705EF5D5315DFE /* Pods-DogCMS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DogCMS.release.xcconfig"; path = "Pods/Target Support Files/Pods-DogCMS/Pods-DogCMS.release.xcconfig"; sourceTree = "<group>"; };
 		C9C5BE5A73AB9A6839ACF2A7 /* Pods_DogCMS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DogCMS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -93,6 +95,7 @@
 				8D144A1A216FEE2D00AD925E /* AppDelegate.swift */,
 				8D144A2C216FEE9400AD925E /* ViewController.swift */,
 				8D144A2E216FEE9900AD925E /* Sticker.swift */,
+				8DD7264F2174E4920005D6F0 /* StickerCollection.swift */,
 				8D144A30216FEE9D00AD925E /* StickerCollectionViewCell.swift */,
 				8D2F0F0E2172527400FBAF99 /* API.swift */,
 				8D144A32216FEEB700AD925E /* Main.storyboard */,
@@ -226,6 +229,7 @@
 				8D144A2D216FEE9400AD925E /* ViewController.swift in Sources */,
 				8D144A2F216FEE9900AD925E /* Sticker.swift in Sources */,
 				8D144A31216FEE9D00AD925E /* StickerCollectionViewCell.swift in Sources */,
+				8DD726502174E4920005D6F0 /* StickerCollection.swift in Sources */,
 				8D144A1B216FEE2D00AD925E /* AppDelegate.swift in Sources */,
 				8D2F0F0F2172527400FBAF99 /* API.swift in Sources */,
 			);

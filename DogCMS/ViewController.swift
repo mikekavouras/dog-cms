@@ -9,14 +9,6 @@
 import UIKit
 import SVProgressHUD
 
-extension Array {
-    mutating func remove(at indexes: [Int]) {
-        for index in indexes.sorted(by: >) {
-            remove(at: index)
-        }
-    }
-}
-
 enum ScreenState {
     case edit
     case add
@@ -27,7 +19,7 @@ class ViewController: UICollectionViewController,
     UINavigationControllerDelegate,
     UIImagePickerControllerDelegate {
     
-    private var stickers: [Sticker] = []
+    private var stickers = StickerCollection([])
     private var pickerController: UIImagePickerController?
     
     fileprivate let padding: CGFloat = 8
@@ -44,6 +36,8 @@ class ViewController: UICollectionViewController,
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         pickerController = UIImagePickerController()
         pickerController?.delegate = self
         pickerController?.sourceType = .photoLibrary
@@ -132,7 +126,8 @@ class ViewController: UICollectionViewController,
             switch response {
             case .success(let records):
                 SVProgressHUD.dismiss()
-                self.stickers = (records ?? []).compactMap { Sticker.from($0) }
+                let stickers = (records ?? []).compactMap { Sticker.from($0) }
+                self.stickers = StickerCollection(stickers)
                 self.collectionView.reloadData()
             case .error:
                 SVProgressHUD.showError(withStatus: "Couldn't load stickers")
@@ -222,7 +217,9 @@ extension ViewController {
             switch response {
             case .success:
                 SVProgressHUD.dismiss()
-            case .error: break
+            case .error:
+                SVProgressHUD.showError(withStatus: "Couldn't reorder stickers")
+                SVProgressHUD.dismiss(withDelay: 2.0)
             }
         }
     }

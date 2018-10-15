@@ -74,7 +74,7 @@ class API {
     }
     
     
-    func updateSortOrders(_ stickers: [Sticker], _ onCompletion: @escaping (Response<Void>) -> Void) {
+    func updateSortOrders(_ stickers: StickerCollection, _ onCompletion: @escaping (Response<Void>) -> Void) {
         stickers.enumerated().forEach { (offset, element) in
             element.record.setValue(offset, forKey: "sortOrder")
         }
