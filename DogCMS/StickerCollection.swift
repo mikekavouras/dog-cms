@@ -16,7 +16,7 @@ extension Array {
     }
 }
 
-struct StickerCollection: Collection {
+class StickerCollection: Collection {
     typealias Element = Sticker
     typealias Index = Array<Sticker>.Index
     
@@ -34,9 +34,11 @@ struct StickerCollection: Collection {
     
     private var stickers: [Sticker] = []
     private var deletions: [Sticker] = []
+    private var syncType: APIType.Type
     
-    init(_ stickers: [Sticker]) {
+    init<T: APIType>(_ stickers: [Sticker], syncType: T.Type) {
         self.stickers = stickers
+        self.syncType = syncType
     }
     
     subscript(index: Index) -> Element {
@@ -54,12 +56,20 @@ struct StickerCollection: Collection {
         }
     }
     
-    mutating func flushChanges() {
-        deletions = []
-        stickers.forEach { sticker in
-            if sticker.record.creationDate == nil {
-                sticker.record["creationDate"] = Date()
+    func sync(_ onCompletion: @escaping (Response<[Sticker]>) -> Void) {
+        stickers.enumerated().forEach { offset, element in
+            element.record["sortOrder"] = offset
+        }
+        syncType.default.sync(self) { response in
+            switch response {
+            case .success(let records):
+                let newStickers = records.compactMap { Sticker.from($0) }.sorted(by: { a, b in
+                    return (a.record["sortOrder"] as! Int) < (b.record["sortOrder"] as! Int)
+                })
+                onCompletion(.success(newStickers))
+            default: break
             }
+
         }
     }
     
@@ -67,14 +77,14 @@ struct StickerCollection: Collection {
         return stickers.index(after: i)
     }
     
-    mutating func remove(at index: Index) {
+    func remove(at index: Index) {
         if let _ = stickers[index].record.creationDate {
             deletions.append(stickers[index])
         }
         stickers.remove(at: index)
     }
 
-    mutating func remove(at indices: [Index]) {
+    func remove(at indices: [Index]) {
         indices.forEach { index in
             if let _ = stickers[index].record.creationDate {
                 deletions.append(stickers[index])
@@ -82,16 +92,12 @@ struct StickerCollection: Collection {
         }
         stickers.remove(at: indices)
     }
-    
-    mutating func insert(_ sticker: Sticker, at index: Index) {
-        stickers.insert(sticker, at: index)
-    }
-    
-    mutating func append(_ sticker: Sticker) {
+
+    func append(_ sticker: Sticker) {
         stickers.append(sticker)
     }
     
-    mutating func move(_ sticker: Sticker, from: Index, to: Index) {
+    func move(_ sticker: Sticker, from: Index, to: Index) {
         stickers.remove(at: from)
         stickers.insert(sticker, at: to)
     }

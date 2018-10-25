@@ -20,7 +20,7 @@ class ViewController: UICollectionViewController,
     UINavigationControllerDelegate,
     UIImagePickerControllerDelegate {
     
-    private var stickers = StickerCollection([])
+    private var stickers = StickerCollection([], syncType: API.self)
     private var pickerController: UIImagePickerController?
     
     fileprivate let padding: CGFloat = 8
@@ -119,12 +119,13 @@ class ViewController: UICollectionViewController,
     
     private func sync() {
         SVProgressHUD.show(withStatus: "Syncing doggos...")
-        API.default.sync(stickers) { response in
+        stickers.sync { [weak self] response in
             switch response {
-            case .success:
+            case .success(let newStickers):
+                self?.stickers = StickerCollection(newStickers, syncType: API.self)
+                self?.collectionView.reloadData()
                 SVProgressHUD.showSuccess(withStatus: "Finished!")
                 SVProgressHUD.dismiss(withDelay: 2.0)
-                self.stickers.flushChanges()
             case .error:
                 SVProgressHUD.showError(withStatus: "Error syncing")
                 SVProgressHUD.dismiss(withDelay: 2.0)
@@ -138,8 +139,8 @@ class ViewController: UICollectionViewController,
             switch response {
             case .success(let records):
                 SVProgressHUD.dismiss()
-                let stickers = (records ?? []).compactMap { Sticker.from($0) }
-                self.stickers = StickerCollection(stickers)
+                let stickers = records.compactMap { Sticker.from($0) }
+                self.stickers = StickerCollection(stickers, syncType: API.self)
                 self.collectionView.reloadData()
             case .error:
                 SVProgressHUD.showError(withStatus: "Couldn't load stickers")
