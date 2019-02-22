@@ -1,81 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YNs-Iq-0PP">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YNs-Iq-0PP">
+    <device id="ipad11_0rounded" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="irM-nm-6Is">
+        <scene sceneID="enZ-KP-gky">
             <objects>
-                <collectionViewController id="7FX-DU-TM0" customClass="ViewController" customModule="DogCMS" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="Spt-ZJ-jXU">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <viewController id="108-TE-ZeS" customClass="ViewController" customModule="DogCMS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FpB-bv-ad3">
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="WcI-k3-H34">
-                            <size key="itemSize" width="84" height="95"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CellIdentifier" id="Fiv-HE-wrG" customClass="StickerCollectionViewCell" customModule="DogCMS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="84" height="95"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="84" height="95"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fpu-YN-4Pc">
-                                            <rect key="frame" x="0.0" y="0.0" width="84" height="95"/>
-                                        </imageView>
-                                        <view hidden="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ncg-rY-uEN">
-                                            <rect key="frame" x="0.0" y="0.0" width="84" height="95"/>
-                                            <color key="backgroundColor" red="1" green="0.88235294119999996" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        </view>
-                                    </subviews>
-                                </view>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="p1f-jU-NIm">
+                                <rect key="frame" x="257" y="0.0" width="320" height="1194"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="ncg-rY-uEN" firstAttribute="top" secondItem="Fiv-HE-wrG" secondAttribute="top" id="3xH-jN-5ex"/>
-                                    <constraint firstAttribute="bottom" secondItem="Fpu-YN-4Pc" secondAttribute="bottom" id="8Dw-Hq-lhJ"/>
-                                    <constraint firstItem="ncg-rY-uEN" firstAttribute="leading" secondItem="Fiv-HE-wrG" secondAttribute="leading" id="b0g-9h-IbD"/>
-                                    <constraint firstAttribute="trailing" secondItem="Fpu-YN-4Pc" secondAttribute="trailing" id="cB2-TW-FGz"/>
-                                    <constraint firstAttribute="bottom" secondItem="ncg-rY-uEN" secondAttribute="bottom" id="eL8-rq-ead"/>
-                                    <constraint firstAttribute="trailing" secondItem="ncg-rY-uEN" secondAttribute="trailing" id="jEn-WE-fb1"/>
-                                    <constraint firstItem="Fpu-YN-4Pc" firstAttribute="leading" secondItem="Fiv-HE-wrG" secondAttribute="leading" id="ntP-vw-JKy"/>
-                                    <constraint firstItem="Fpu-YN-4Pc" firstAttribute="top" secondItem="Fiv-HE-wrG" secondAttribute="top" id="pof-Ea-0ex"/>
+                                    <constraint firstAttribute="width" constant="320" id="g7s-mL-IgO"/>
                                 </constraints>
-                                <connections>
-                                    <outlet property="selectionIndicator" destination="ncg-rY-uEN" id="xKf-kP-vhT"/>
-                                    <outlet property="stickerImageView" destination="Fpu-YN-4Pc" id="adn-Ui-nL3"/>
-                                </connections>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="7FX-DU-TM0" id="ozx-Mz-8Ea"/>
-                            <outlet property="delegate" destination="7FX-DU-TM0" id="Ctr-NI-csQ"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" id="bTd-d0-RvV"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oib-Z3-hHy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="DNn-hK-rMR">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CellIdentifier" id="Fiv-HE-wrG" customClass="StickerCollectionViewCell" customModule="DogCMS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fpu-YN-4Pc">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                </imageView>
+                                                <view hidden="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ncg-rY-uEN">
+                                                    <rect key="frame" x="-34" y="-20" width="84" height="95"/>
+                                                    <color key="backgroundColor" red="1" green="0.88235294119999996" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </view>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="ncg-rY-uEN" firstAttribute="top" secondItem="Fiv-HE-wrG" secondAttribute="top" id="3xH-jN-5ex"/>
+                                            <constraint firstAttribute="bottom" secondItem="Fpu-YN-4Pc" secondAttribute="bottom" id="8Dw-Hq-lhJ"/>
+                                            <constraint firstItem="ncg-rY-uEN" firstAttribute="leading" secondItem="Fiv-HE-wrG" secondAttribute="leading" id="b0g-9h-IbD"/>
+                                            <constraint firstAttribute="trailing" secondItem="Fpu-YN-4Pc" secondAttribute="trailing" id="cB2-TW-FGz"/>
+                                            <constraint firstAttribute="bottom" secondItem="ncg-rY-uEN" secondAttribute="bottom" id="eL8-rq-ead"/>
+                                            <constraint firstAttribute="trailing" secondItem="ncg-rY-uEN" secondAttribute="trailing" id="jEn-WE-fb1"/>
+                                            <constraint firstItem="Fpu-YN-4Pc" firstAttribute="leading" secondItem="Fiv-HE-wrG" secondAttribute="leading" id="ntP-vw-JKy"/>
+                                            <constraint firstItem="Fpu-YN-4Pc" firstAttribute="top" secondItem="Fiv-HE-wrG" secondAttribute="top" id="pof-Ea-0ex"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="selectionIndicator" destination="ncg-rY-uEN" id="xKf-kP-vhT"/>
+                                            <outlet property="stickerImageView" destination="Fpu-YN-4Pc" id="adn-Ui-nL3"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="g7s-mL-IgO"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="g7s-mL-IgO"/>
+                                    </mask>
+                                </variation>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="p1f-jU-NIm" firstAttribute="centerX" secondItem="FpB-bv-ad3" secondAttribute="centerX" id="2bt-fr-Ses"/>
+                            <constraint firstItem="p1f-jU-NIm" firstAttribute="centerY" secondItem="FpB-bv-ad3" secondAttribute="centerY" id="HQw-wf-oub"/>
+                            <constraint firstItem="p1f-jU-NIm" firstAttribute="bottom" secondItem="FpB-bv-ad3" secondAttribute="bottom" id="pOM-70-8j7"/>
+                            <constraint firstItem="p1f-jU-NIm" firstAttribute="top" secondItem="FpB-bv-ad3" secondAttribute="top" id="ppg-2j-lav"/>
+                            <constraint firstItem="p1f-jU-NIm" firstAttribute="leading" secondItem="OVo-pI-cDL" secondAttribute="leading" id="uHX-ag-2Ju"/>
+                            <constraint firstItem="p1f-jU-NIm" firstAttribute="trailing" secondItem="OVo-pI-cDL" secondAttribute="trailing" id="wbc-n2-ZGX"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OVo-pI-cDL"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="2bt-fr-Ses"/>
+                                <exclude reference="HQw-wf-oub"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="2bt-fr-Ses"/>
+                                <exclude reference="HQw-wf-oub"/>
+                                <exclude reference="uHX-ag-2Ju"/>
+                                <exclude reference="wbc-n2-ZGX"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="BAz-KH-Ecv"/>
+                    <connections>
+                        <outlet property="collectionView" destination="p1f-jU-NIm" id="Sja-Xv-y4r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n9j-d0-Tng" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1144.8" y="-598.65067466266873"/>
+            <point key="canvasLocation" x="1380" y="-598"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="u2a-x2-qFC">
             <objects>
                 <navigationController id="YNs-Iq-0PP" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jGe-pM-D7e">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="24" width="834" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="7FX-DU-TM0" kind="relationship" relationship="rootViewController" id="nX9-Cx-lab"/>
+                        <segue destination="108-TE-ZeS" kind="relationship" relationship="rootViewController" id="k0D-0X-cKg"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8VV-cW-jA0" userLabel="First Responder" sceneMemberID="firstResponder"/>

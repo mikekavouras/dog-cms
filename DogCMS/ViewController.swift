@@ -15,7 +15,9 @@ enum ScreenState {
     case add
 }
 
-class ViewController: UICollectionViewController,
+class ViewController: UIViewController,
+    UICollectionViewDelegate,
+    UICollectionViewDataSource,
     UICollectionViewDelegateFlowLayout,
     UINavigationControllerDelegate,
     UIImagePickerControllerDelegate {
@@ -24,24 +26,27 @@ class ViewController: UICollectionViewController,
     private var pickerController: UIImagePickerController?
     
     fileprivate let padding: CGFloat = 8
-    fileprivate let perRow: CGFloat = 3
+    fileprivate var perRow: CGFloat = 3
     
     private var state: ScreenState = .add
 
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setup()
-        
         fetchStickers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        pickerController = UIImagePickerController()
-        pickerController?.delegate = self
-        pickerController?.sourceType = .photoLibrary
+        if pickerController == nil {
+            pickerController = UIImagePickerController()
+            pickerController?.delegate = self
+            pickerController?.sourceType = .photoLibrary
+        }
     }
 
     // MARK: - Setup
@@ -57,6 +62,9 @@ class ViewController: UICollectionViewController,
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
         collectionView.addGestureRecognizer(longPressGesture)
         collectionView.allowsSelection = false
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     private func setupNavigationBar() {
@@ -64,7 +72,7 @@ class ViewController: UICollectionViewController,
             UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(toggleState)),
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAssetButtonTapped))
         ]
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Publish", style: .plain, target: self, action: #selector(publish))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Publish", style: .plain, target: self, action: #selector(sync))
     }
     
     // MARK: - Actions
@@ -110,14 +118,10 @@ class ViewController: UICollectionViewController,
         }
     }
     
-    @objc private func publish() {
-        sync()
-    }
-    
     // MARK: - Data
     // MARK: - 
     
-    private func sync() {
+    @objc private func sync() {
         SVProgressHUD.show(withStatus: "Syncing doggos...")
         stickers.sync { [weak self] response in
             switch response {
@@ -184,15 +188,15 @@ class ViewController: UICollectionViewController,
 // MARK: -
 
 extension ViewController {
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return stickers.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellIdentifier", for: indexPath) as? StickerCollectionViewCell else {
             return UICollectionViewCell()
         }
@@ -208,19 +212,19 @@ extension ViewController {
 // MARK: -
 
 extension ViewController {
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         refreshTrashCanState()
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         refreshTrashCanState()
     }
     
-    override func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let sticker = stickers[sourceIndexPath.row]
         stickers.move(sticker, from: sourceIndexPath.row, to: destinationIndexPath.row)
     }
