@@ -22,30 +22,50 @@ class ViewController: UIViewController,
     UINavigationControllerDelegate,
     UIImagePickerControllerDelegate {
     
-    private var stickers = StickerCollection([], syncType: API.self)
+    private var stickers: StickerCollection!
     private var pickerController: UIImagePickerController?
     
     fileprivate let padding: CGFloat = 8
     fileprivate var perRow: CGFloat = 3
     
     private var state: ScreenState = .add
+    private var apiType: APIType.Type
 
-    @IBOutlet weak var collectionView: UICollectionView!
+    var collectionView: UICollectionView!
+    
+    var stickersFetched = false
+    private var tabBarConfig: (ViewController) -> Void = { _ in }
+    
+    init(_ apiType: APIType.Type, _ tabBarConfig: @escaping (ViewController) -> Void) {
+        self.apiType = apiType
+        self.stickers = StickerCollection([], syncType: apiType)
+        self.tabBarConfig = tabBarConfig
+        super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = .white
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setup()
-        fetchStickers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         if pickerController == nil {
             pickerController = UIImagePickerController()
             pickerController?.delegate = self
             pickerController?.sourceType = .photoLibrary
+        }
+        
+        if !stickersFetched {
+            fetchStickers()
+            stickersFetched = true
         }
     }
 
@@ -55,11 +75,25 @@ class ViewController: UIViewController,
     private func setup() {
         setupCollectionView()
         setupNavigationBar()
+        setupTabBar()
         SVProgressHUD.setDefaultStyle(.dark)
     }
     
     private func setupCollectionView() {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
+
+        let layout = UICollectionViewFlowLayout()
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
+        view.addSubview(collectionView)
+        collectionView.backgroundColor = .white
+        
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        collectionView.register(StickerCollectionViewCell.self, forCellWithReuseIdentifier: "CellIdentifier")
+        
         collectionView.addGestureRecognizer(longPressGesture)
         collectionView.allowsSelection = false
         
@@ -73,6 +107,10 @@ class ViewController: UIViewController,
             UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAssetButtonTapped))
         ]
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Publish", style: .plain, target: self, action: #selector(sync))
+    }
+    
+    private func setupTabBar() {
+        tabBarConfig(self)
     }
     
     // MARK: - Actions
@@ -122,12 +160,13 @@ class ViewController: UIViewController,
     // MARK: - 
     
     @objc private func sync() {
-        SVProgressHUD.show(withStatus: "Syncing doggos...")
+        SVProgressHUD.show(withStatus: "Syncing stickies...")
         stickers.sync { [weak self] response in
+            guard let self = self else { return }
             switch response {
             case .success(let newStickers):
-                self?.stickers = StickerCollection(newStickers, syncType: API.self)
-                self?.collectionView.reloadData()
+                self.stickers = StickerCollection(newStickers, syncType: self.apiType)
+                self.collectionView.reloadData()
                 SVProgressHUD.showSuccess(withStatus: "Finished!")
                 SVProgressHUD.dismiss(withDelay: 2.0)
             case .error:
@@ -138,13 +177,13 @@ class ViewController: UIViewController,
     }
     
     private func fetchStickers() {
-        SVProgressHUD.show(withStatus: "Fetching doggos...")
-        API.default.fetchStickers { response in
+        SVProgressHUD.show(withStatus: "Fetching stickies...")
+        apiType.default.fetchStickers { response in
             switch response {
             case .success(let records):
                 SVProgressHUD.dismiss()
                 let stickers = records.compactMap { Sticker.from($0) }
-                self.stickers = StickerCollection(stickers, syncType: API.self)
+                self.stickers = StickerCollection(stickers, syncType: self.apiType)
                 self.collectionView.reloadData()
             case .error:
                 SVProgressHUD.showError(withStatus: "Couldn't load stickers")
