@@ -36,7 +36,7 @@ class StickerCollection: Collection {
     private var deletions: [Sticker] = []
     private var syncType: APIType.Type
     
-    init<T: APIType>(_ stickers: [Sticker], syncType: T.Type) {
+    init(_ stickers: [Sticker], syncType: APIType.Type) {
         self.stickers = stickers
         self.syncType = syncType
     }

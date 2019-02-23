@@ -14,6 +14,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        let tabController = UITabBarController()
+        tabController.viewControllers = [dogController, creaturesController]
+        window = UIWindow()
+
+        window?.rootViewController = tabController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
@@ -26,5 +34,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) { }
 
     func applicationWillTerminate(_ application: UIApplication) { }
+    
+    lazy private var dogController: UINavigationController = {
+        let controller = ViewController(DogAPI.self) { viewController in
+            viewController.tabBarItem = UITabBarItem(title: "Dog", image: UIImage(named: "dog")!, selectedImage: UIImage(named: "dog")!)
+        }
+        let navController = UINavigationController(rootViewController: controller)
+        return navController
+    }()
+    
+    lazy private var creaturesController: UINavigationController = {
+        let controller = ViewController(CreaturesAPI.self) { viewController in
+            viewController.tabBarItem = UITabBarItem(title: "Creatures", image: UIImage(named: "creatures")!, selectedImage: UIImage(named: "creatures")!)
+        }
+        let navController = UINavigationController(rootViewController: controller)
+        return navController
+    }()
 }
 
