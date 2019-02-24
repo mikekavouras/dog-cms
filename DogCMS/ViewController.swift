@@ -296,6 +296,9 @@ extension ViewController {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == stickers.count {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddCell", for: indexPath) as! AddCell
+            cell.clickHandler = { [weak self] in
+                self?.addAssetButtonTapped()
+            }
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StickerCell", for: indexPath) as! StickerCollectionViewCell
@@ -313,6 +316,7 @@ extension ViewController {
 
 extension ViewController {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return state == .edit
         if state == .edit {
             return true
         } else {

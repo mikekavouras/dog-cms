@@ -9,6 +9,9 @@
 import UIKit
 
 class AddCell: UICollectionViewCell {
+    
+    var clickHandler: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -23,21 +26,28 @@ class AddCell: UICollectionViewCell {
         bgView.backgroundColor = UIColor(red: 246 / 255.0, green: 246 / 255.0, blue: 246 / 255.0, alpha: 1.0)
         contentView.addSubview(bgView)
         
-        let imageView = UIImageView(frame: .zero)
-        imageView.image = UIImage(named: "add")!
-        bgView.addSubview(imageView)
+        let button = UIButton(frame: .zero)
+        button.setImage(UIImage(named: "add")!, for: .normal)
+        
+        bgView.addSubview(button)
         
         bgView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        button.translatesAutoresizingMaskIntoConstraints = false
         
         bgView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         bgView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
         bgView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         bgView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         
-        imageView.centerXAnchor.constraint(equalTo: bgView.centerXAnchor).isActive = true
-        imageView.centerYAnchor.constraint(equalTo: bgView.centerYAnchor).isActive = true
-        
-        imageView.frame.size = CGSize(width: 35, height: 35)
+        button.leftAnchor.constraint(equalTo: bgView.leftAnchor).isActive = true
+        button.rightAnchor.constraint(equalTo: bgView.rightAnchor).isActive = true
+        button.topAnchor.constraint(equalTo: bgView.topAnchor).isActive = true
+        button.bottomAnchor.constraint(equalTo: bgView.bottomAnchor).isActive = true
+
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func buttonTapped() {
+        clickHandler?()
     }
 }
