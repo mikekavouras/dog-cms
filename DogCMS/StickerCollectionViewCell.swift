@@ -47,7 +47,7 @@ class StickerCollectionViewCell: UICollectionViewCell {
     
     private func setupSelectionIndicator() {
         contentView.addSubview(selectionIndicatorView)
-        selectionIndicatorView.backgroundColor = UIColor.red.withAlphaComponent(0.2)
+        selectionIndicatorView.backgroundColor = UIColor.black.withAlphaComponent(0.1)
         selectionIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         selectionIndicatorView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         selectionIndicatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true

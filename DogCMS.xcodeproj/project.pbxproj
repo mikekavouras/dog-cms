@@ -15,6 +15,7 @@
 		8D144A31216FEE9D00AD925E /* StickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D144A30216FEE9D00AD925E /* StickerCollectionViewCell.swift */; };
 		8D144A36216FEED300AD925E /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D144A35216FEED300AD925E /* CloudKit.framework */; };
 		8D2F0F0F2172527400FBAF99 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2F0F0E2172527400FBAF99 /* API.swift */; };
+		8D3772232222084E00AD6366 /* AddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3772222222084E00AD6366 /* AddCell.swift */; };
 		8DD726502174E4920005D6F0 /* StickerCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD7264F2174E4920005D6F0 /* StickerCollection.swift */; };
 		8DF6AE6B2221973E00FCDDA1 /* DogAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF6AE6A2221973E00FCDDA1 /* DogAPI.swift */; };
 		8DF6AE6D2221978000FCDDA1 /* CreaturesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF6AE6C2221978000FCDDA1 /* CreaturesAPI.swift */; };
@@ -34,6 +35,7 @@
 		8D144A34216FEED100AD925E /* DogCMS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DogCMS.entitlements; sourceTree = "<group>"; };
 		8D144A35216FEED300AD925E /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		8D2F0F0E2172527400FBAF99 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		8D3772222222084E00AD6366 /* AddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCell.swift; sourceTree = "<group>"; };
 		8DD7264F2174E4920005D6F0 /* StickerCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCollection.swift; sourceTree = "<group>"; };
 		8DF6AE6A2221973E00FCDDA1 /* DogAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogAPI.swift; sourceTree = "<group>"; };
 		8DF6AE6C2221978000FCDDA1 /* CreaturesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreaturesAPI.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				8D144A2E216FEE9900AD925E /* Sticker.swift */,
 				8DD7264F2174E4920005D6F0 /* StickerCollection.swift */,
 				8D144A30216FEE9D00AD925E /* StickerCollectionViewCell.swift */,
+				8D3772222222084E00AD6366 /* AddCell.swift */,
 				8D2F0F0E2172527400FBAF99 /* API.swift */,
 				8DF6AE6A2221973E00FCDDA1 /* DogAPI.swift */,
 				8DF6AE6C2221978000FCDDA1 /* CreaturesAPI.swift */,
@@ -234,6 +237,7 @@
 				8D144A31216FEE9D00AD925E /* StickerCollectionViewCell.swift in Sources */,
 				8DD726502174E4920005D6F0 /* StickerCollection.swift in Sources */,
 				8DF6AE6D2221978000FCDDA1 /* CreaturesAPI.swift in Sources */,
+				8D3772232222084E00AD6366 /* AddCell.swift in Sources */,
 				8D144A1B216FEE2D00AD925E /* AppDelegate.swift in Sources */,
 				8D2F0F0F2172527400FBAF99 /* API.swift in Sources */,
 			);

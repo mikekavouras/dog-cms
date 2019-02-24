@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) { }
     
     lazy private var dogController: UINavigationController = {
-        let controller = ViewController(DogAPI.self) { viewController in
+        let controller = ViewController(DogAPI.self, title: "Dog") { viewController in
             viewController.tabBarItem = UITabBarItem(title: "Dog", image: UIImage(named: "dog")!, selectedImage: UIImage(named: "dog")!)
         }
         let navController = UINavigationController(rootViewController: controller)
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
     
     lazy private var creaturesController: UINavigationController = {
-        let controller = ViewController(CreaturesAPI.self) { viewController in
+        let controller = ViewController(CreaturesAPI.self, title: "Creatures") { viewController in
             viewController.tabBarItem = UITabBarItem(title: "Creatures", image: UIImage(named: "creatures")!, selectedImage: UIImage(named: "creatures")!)
         }
         let navController = UINavigationController(rootViewController: controller)
